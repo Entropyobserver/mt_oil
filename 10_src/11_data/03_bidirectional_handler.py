@@ -1,68 +1,77 @@
-from typing import Dict, List
-from enum import Enum
+from typing import Tuple
+from .dataset import TranslationDataset, TranslationSample
 
 
-class TranslationDirection(Enum):
-    NOB_TO_ENG = "nob_to_eng"
-    ENG_TO_NOB = "eng_to_nob"
-
-
-class BidirectionalDataHandler:
-    
+class BidirectionalHandler:
     def __init__(
         self,
-        nob_lang_code: str = "nob_Latn",
-        eng_lang_code: str = "eng_Latn"
+        forward_src_lang: str = "nob_Latn",
+        forward_tgt_lang: str = "eng_Latn"
     ):
-        self.nob_lang_code = nob_lang_code
-        self.eng_lang_code = eng_lang_code
+        self.forward_src_lang = forward_src_lang
+        self.forward_tgt_lang = forward_tgt_lang
     
-    def get_direction_config(
-        self,
-        direction: TranslationDirection
-    ) -> Dict[str, str]:
-        if direction == TranslationDirection.NOB_TO_ENG:
-            return {
-                "src_lang": self.nob_lang_code,
-                "tgt_lang": self.eng_lang_code,
-                "source_field": "source",
-                "target_field": "target"
-            }
-        elif direction == TranslationDirection.ENG_TO_NOB:
-            return {
-                "src_lang": self.eng_lang_code,
-                "tgt_lang": self.nob_lang_code,
-                "source_field": "target",
-                "target_field": "source"
-            }
-        else:
-            raise ValueError(f"Unknown direction: {direction}")
-    
-    def reverse_data(self, data: List[Dict]) -> List[Dict]:
-        reversed_data = []
-        for item in data:
-            reversed_item = {
-                "source": item.get("target", ""),
-                "target": item.get("source", "")
-            }
-            if "metadata" in item:
-                reversed_item["metadata"] = item["metadata"]
-            reversed_data.append(reversed_item)
-        return reversed_data
+    def reverse_dataset(self, dataset: TranslationDataset) -> TranslationDataset:
+        reversed_samples = [
+            TranslationSample(
+                source=sample.target,
+                target=sample.source,
+                metadata=sample.metadata
+            )
+            for sample in dataset.samples
+        ]
+        
+        return TranslationDataset(
+            reversed_samples,
+            tokenizer=dataset.tokenizer,
+            max_length=dataset.max_length,
+            src_lang=self.forward_tgt_lang,
+            tgt_lang=self.forward_src_lang
+        )
     
     def create_bidirectional_dataset(
         self,
-        data: List[Dict]
-    ) -> List[Dict]:
-        forward_data = data
-        reverse_data = self.reverse_data(data)
-        return forward_data + reverse_data
+        dataset: TranslationDataset
+    ) -> TranslationDataset:
+        
+        reversed_dataset = self.reverse_dataset(dataset)
+        combined_samples = dataset.samples + reversed_dataset.samples
+        
+        return TranslationDataset(
+            combined_samples,
+            tokenizer=dataset.tokenizer,
+            max_length=dataset.max_length
+        )
     
     def split_by_direction(
         self,
-        bidirectional_data: List[Dict]
-    ) -> tuple[List[Dict], List[Dict]]:
-        mid = len(bidirectional_data) // 2
-        forward_data = bidirectional_data[:mid]
-        reverse_data = bidirectional_data[mid:]
-        return forward_data, reverse_data
+        dataset: TranslationDataset
+    ) -> Tuple[TranslationDataset, TranslationDataset]:
+        
+        forward_samples = []
+        reverse_samples = []
+        
+        for sample in dataset.samples:
+            metadata = sample.metadata or {}
+            if metadata.get('direction') == 'reverse':
+                reverse_samples.append(sample)
+            else:
+                forward_samples.append(sample)
+        
+        forward_ds = TranslationDataset(
+            forward_samples,
+            dataset.tokenizer,
+            dataset.max_length,
+            self.forward_src_lang,
+            self.forward_tgt_lang
+        )
+        
+        reverse_ds = TranslationDataset(
+            reverse_samples,
+            dataset.tokenizer,
+            dataset.max_length,
+            self.forward_tgt_lang,
+            self.forward_src_lang
+        )
+        
+        return forward_ds, reverse_ds
