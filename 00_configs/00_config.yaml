@@ -1,0 +1,34 @@
+defaults:
+  - model: nllb_600m
+  - adapter: lora_r16
+  - data: npd
+  - training: standard
+  - _self_
+
+project:
+  name: nob-eng-translation
+  version: 1.0.0
+  random_seed: 42
+
+paths:
+  data_dir: data
+  output_dir: outputs
+  mlruns_dir: mlruns
+  models_dir: models
+
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "${paths.output_dir}/${experiment.name}/run.log"
+
+experiment:
+  name: default
+  tags: []
+  description: ""
+
+hydra:
+  run:
+    dir: ${paths.output_dir}/${experiment.name}/runs/${now:%Y-%m-%d_%H-%M-%S}
+  sweep:
+    dir: ${paths.output_dir}/${experiment.name}/sweeps
+    subdir: ${hydra.job.num}

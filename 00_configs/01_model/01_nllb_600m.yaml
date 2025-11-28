@@ -1,0 +1,22 @@
+name: nllb-200-distilled-600M
+pretrained_name: facebook/nllb-200-distilled-600M
+type: seq2seq
+
+architecture:
+  encoder_layers: 12
+  decoder_layers: 12
+  d_model: 1024
+  num_heads: 16
+  
+tokenizer:
+  src_lang: nob_Latn
+  tgt_lang: eng_Latn
+  max_length: 128
+
+parameters:
+  total: 600M
+  trainable: null
+
+device:
+  dtype: float16
+  device_map: auto
