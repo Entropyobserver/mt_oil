@@ -1,0 +1,6 @@
+# 00_configs/06_experiment/01_data_scaling.yaml 
+name: data_scaling
+description: Experiment to analyze data scaling effects
+data_sizes: [100, 500, 1000, 2000, 4000, 6000, 8000, 10000]
+num_runs: 3
+seeds: [42, 123, 456]

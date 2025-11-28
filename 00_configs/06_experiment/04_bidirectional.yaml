@@ -1,0 +1,7 @@
+name: bidirectional
+description: Bidirectional translation comparison
+directions:
+  - nob_to_eng
+  - eng_to_nob
+share_vocabulary: true
+combined_training: true

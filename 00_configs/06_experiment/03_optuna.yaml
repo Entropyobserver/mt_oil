@@ -1,0 +1,7 @@
+name: optuna_search
+description: Optuna-based hyperparameter optimization
+num_trials: 50
+timeout_hours: 24
+sampler: TPESampler
+pruner: SuccessiveHalving
+n_startup_trials: 10

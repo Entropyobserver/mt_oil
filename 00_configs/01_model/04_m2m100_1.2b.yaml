@@ -1,0 +1,23 @@
+# 00_configs/01_model/04_m2m100_1.2b.yaml
+name: m2m_1.2B
+pretrained_name: facebook/m2m-100-1.2B
+type: seq2seq
+
+architecture:
+  encoder_layers: 12
+  decoder_layers: 12
+  d_model: 768
+  num_heads: 12
+
+tokenizer:
+  src_lang: no
+  tgt_lang: en
+  max_length: 128
+
+parameters:
+  total: 1.2B
+  trainable: null
+
+device:
+  dtype: float16
+  device_map: auto

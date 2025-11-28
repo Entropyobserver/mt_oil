@@ -1,0 +1,23 @@
+# 00_configs/01_model/03_m2m_418m.yaml
+name: m2m_418M
+pretrained_name: facebook/m2m-418M-last-ckpt
+type: seq2seq
+
+architecture:
+  encoder_layers: 12
+  decoder_layers: 12
+  d_model: 512
+  num_heads: 16
+
+tokenizer:
+  src_lang: no
+  tgt_lang: en
+  max_length: 128
+
+parameters:
+  total: 418M
+  trainable: null
+
+device:
+  dtype: float16
+  device_map: auto

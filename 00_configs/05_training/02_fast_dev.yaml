@@ -1,0 +1,19 @@
+# 00_configs/05_training/02_fast_dev.yaml 
+num_train_epochs: 1
+batch_size:
+  train: 8
+  eval: 8
+gradient_accumulation_steps: 1
+optimizer:
+  name: adamw
+  learning_rate: 1.0e-3
+  weight_decay: 0.01
+evaluation:
+  strategy: steps
+  eval_steps: 50
+save:
+  strategy: steps
+  save_steps: 100
+early_stopping:
+  patience: 2
+  threshold: 0.001

@@ -1,0 +1,25 @@
+num_train_epochs: 3
+batch_size:
+  train: 16
+  eval: 16
+gradient_accumulation_steps: 2
+optimizer:
+  name: adamw
+  learning_rate: 5.0e-4
+  weight_decay: 0.01
+lr_scheduler:
+  type: linear
+  warmup_steps: 100
+evaluation:
+  strategy: steps
+  eval_steps: 200
+save:
+  strategy: steps
+  save_steps: 400
+early_stopping:
+  patience: 3
+  threshold: 0.001
+compute:
+  fp16: true
+  ddp: true
+  ddp_find_unused_parameters: false

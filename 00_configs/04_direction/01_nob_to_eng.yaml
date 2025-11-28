@@ -1,0 +1,6 @@
+# 00_configs/04_direction/01_nob_to_eng.yaml
+source_language: Norwegian
+target_language: English
+src_lang_code: nob_Latn
+tgt_lang_code: eng_Latn
+direction_name: Norwegian to English

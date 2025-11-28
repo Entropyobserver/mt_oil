@@ -1,0 +1,23 @@
+# 00_configs/01_model/02_nllb_1.3b.yaml 
+name: nllb-200-1.3B
+pretrained_name: facebook/nllb-200-1.3B
+type: seq2seq
+
+architecture:
+  encoder_layers: 24
+  decoder_layers: 24
+  d_model: 1024
+  num_heads: 16
+
+tokenizer:
+  src_lang: nob_Latn
+  tgt_lang: eng_Latn
+  max_length: 128
+
+parameters:
+  total: 1.3B
+  trainable: null
+
+device:
+  dtype: float16
+  device_map: auto
