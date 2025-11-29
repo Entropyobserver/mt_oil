@@ -3,14 +3,15 @@ from pathlib import Path
 import json
 import hydra
 from omegaconf import DictConfig
+import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "10_src"))
 
-from src.data.data_loader import DataManager
-from src.models.model_factory import ModelFactory
-from src.evaluation.base_evaluator import BaseEvaluator
-from src.utils.seed_manager import SeedManager
-from src.utils.logger import Logger
+from data.data_loader import DataManager
+from models.model_factory import ModelFactory
+from evaluation.base_evaluator import BaseEvaluator
+from utils.seed_manager import SeedManager
+from utils.logger import Logger
 
 
 @hydra.main(version_base=None, config_path="../../00_configs", config_name="00_config")
@@ -30,7 +31,6 @@ def main(cfg: DictConfig):
         logger.error("Stage 1 results not found. Run stage 1 first.")
         return
 
-    import pandas as pd
     trials_df = pd.read_csv(results_path)
 
     best_trials = trials_df.nlargest(3, 'values_0')
@@ -50,7 +50,7 @@ def main(cfg: DictConfig):
             trainer = ModelFactory.create_trainer(cfg, trainer_type='lora')
 
             train_config = {
-                'output_dir': Path(cfg.paths.output_dir) / f"stage2_config_{idx}_run_{run}",
+                'output_dir': str(Path(cfg.paths.output_dir) / f"stage2_config_{idx}_run_{run}"),
                 'r': params['r'],
                 'alpha': params['alpha'],
                 'dropout': params['dropout'],
@@ -64,11 +64,9 @@ def main(cfg: DictConfig):
             }
 
             try:
-                result = trainer.train(
-                    [s.to_dict() for s in train_ds.samples],
-                    [s.to_dict() for s in val_ds.samples],
-                    train_config
-                )
+                train_data = [s.to_dict() for s in train_ds.samples]
+                val_data = [s.to_dict() for s in val_ds.samples]
+                result = trainer.train(train_data, val_data, train_config)
 
                 predictions = trainer.generate_predictions(result['model'], test_ds)
                 sources = [s.source for s in test_ds.samples]
@@ -94,28 +92,27 @@ def main(cfg: DictConfig):
 
     results_df = pd.DataFrame(final_results)
     results_path = Path(cfg.paths.output_dir) / "optuna_stage2_results.csv"
+    results_path.parent.mkdir(parents=True, exist_ok=True)
     results_df.to_csv(results_path, index=False)
 
-    best_row = results_df.loc[results_df['test_bleu'].idxmax()]
+    if not results_df.empty:
+        best_row = results_df.loc[results_df['test_bleu'].idxmax()]
 
-    best_config = {
-        'r': int(best_row['r']),
-        'alpha': int(best_row['alpha']),
-        'dropout': float(best_row['dropout']),
-        'test_bleu': float(best_row['test_bleu']),
-        'test_chrf': float(best_row['test_chrf'])
-    }
+        best_config = {
+            'r': int(best_row['r']),
+            'alpha': int(best_row['alpha']),
+            'dropout': float(best_row['dropout']),
+            'test_bleu': float(best_row['test_bleu']),
+            'test_chrf': float(best_row['test_chrf'])
+        }
 
-    config_path = Path(cfg.paths.output_dir) / "best_config.json"
-    with open(config_path, 'w') as f:
-        json.dump(best_config, f, indent=2)
+        config_path = Path(cfg.paths.output_dir) / "best_config.json"
+        config_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(config_path, 'w') as f:
+            json.dump(best_config, f, indent=2)
 
-    logger.info(f"\nBest Configuration Saved:")
-    logger.info(f"  r={best_config['r']}, alpha={best_config['alpha']}, dropout={best_config['dropout']}")
-    logger.info(f"  Test BLEU: {best_config['test_bleu']:.4f}")
+        logger.info(f"\nBest Configuration Saved:")
+        logger.info(f"  r={best_config['r']}, alpha={best_config['alpha']}, dropout={best_config['dropout']}")
+        logger.info(f"  Test BLEU: {best_config['test_bleu']:.4f}")
 
     logger.info("Stage 2 completed")
-
-
-if __name__ == "__main__":
-    main()

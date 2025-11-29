@@ -6,20 +6,19 @@ from omegaconf import DictConfig, OmegaConf
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "10_src"))
 
-from src.data.data_loader import DataManager
-from src.models.model_factory import ModelFactory
-from src.evaluation.base_evaluator import BaseEvaluator
-from src.evaluation.error_analyzer import ErrorAnalyzer
-from src.utils.seed_manager import SeedManager
-from src.utils.logger import Logger
-from src.utils.mlflow_wrapper import MLflowWrapper
+from data.data_loader import DataManager
+from models.model_factory import ModelFactory
+from evaluation.base_evaluator import BaseEvaluator
+from evaluation.error_analyzer import ErrorAnalyzer
+from utils.seed_manager import SeedManager
+from utils.logger import Logger
+from utils.mlflow_wrapper import MLflowWrapper
 
 
 @hydra.main(version_base=None, config_path="../../00_configs", config_name="00_config")
 def main(cfg: DictConfig):
     logger = Logger.get_logger(__name__, cfg)
     logger.info("Starting final evaluation")
-    logger.info(f"\n{OmegaConf.to_yaml(cfg)}")
     
     SeedManager.set_seed(cfg.project.random_seed)
     
@@ -35,17 +34,27 @@ def main(cfg: DictConfig):
     
     trainer = ModelFactory.create_trainer(cfg, trainer_type='lora')
     
+    train_config = {
+        'output_dir': str(Path(cfg.paths.output_dir) / "final_model"),
+        'r': cfg.adapter.r,
+        'alpha': cfg.adapter.lora_alpha,
+        'dropout': cfg.adapter.lora_dropout,
+        'epochs': cfg.training.num_train_epochs,
+        'batch_size': cfg.training.batch_size.train,
+        'gradient_accumulation_steps': cfg.training.gradient_accumulation_steps,
+        'learning_rate': cfg.training.optimizer.learning_rate,
+        'eval_steps': cfg.training.evaluation.eval_steps,
+        'save_steps': cfg.training.save.save_steps,
+        'early_stopping_patience': cfg.training.early_stopping.patience
+    }
+    
     logger.info("Training final model")
-    train_result = trainer.train(
-        train_dataset=train_ds,
-        eval_dataset=val_ds
-    )
+    train_data = [s.to_dict() for s in train_ds.samples]
+    val_data = [s.to_dict() for s in val_ds.samples]
+    train_result = trainer.train(train_data, val_data, train_config)
     
     logger.info("Generating predictions on test set")
-    predictions = trainer.generate_predictions(
-        train_result['model'],
-        test_ds
-    )
+    predictions = trainer.generate_predictions(train_result['model'], test_ds)
     
     sources = [s.source for s in test_ds.samples]
     references = [s.target for s in test_ds.samples]
@@ -60,6 +69,7 @@ def main(cfg: DictConfig):
         logger.info(f"COMET: {metrics['comet']:.4f}")
     
     output_dir = Path(cfg.paths.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
     
     results_path = output_dir / "final_results.json"
     with open(results_path, 'w') as f:
@@ -86,17 +96,6 @@ def main(cfg: DictConfig):
     pred_path = output_dir / "test_predictions.json"
     with open(pred_path, 'w', encoding='utf-8') as f:
         json.dump(predictions_output, f, ensure_ascii=False, indent=2)
-    
-    mlflow_wrapper.log_experiment_results(
-        metrics=metrics,
-        model=train_result['model'],
-        config=cfg,
-        artifacts={
-            'results': results_path,
-            'error_analysis': error_path,
-            'predictions': pred_path
-        }
-    )
     
     logger.info(f"Results saved to {output_dir}")
     logger.info("Final evaluation completed")

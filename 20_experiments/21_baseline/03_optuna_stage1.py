@@ -1,16 +1,16 @@
 import sys
 from pathlib import Path
 import hydra
-from omegaconf import DictConfig, OmegaConf
+from omegaconf import DictConfig
 import optuna
 from optuna.pruners import SuccessiveHalvingPruner
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "10_src"))
 
-from src.data.data_loader import DataManager
-from src.models.model_factory import ModelFactory
-from src.utils.seed_manager import SeedManager
-from src.utils.logger import Logger
+from data.data_loader import DataManager
+from models.model_factory import ModelFactory
+from utils.seed_manager import SeedManager
+from utils.logger import Logger
 
 
 @hydra.main(version_base=None, config_path="../../00_configs", config_name="00_config")
@@ -35,7 +35,7 @@ def main(cfg: DictConfig):
         trainer = ModelFactory.create_trainer(cfg, trainer_type='lora')
 
         train_config = {
-            'output_dir': Path(cfg.paths.output_dir) / f"optuna_trial_{trial.number}",
+            'output_dir': str(Path(cfg.paths.output_dir) / f"optuna_trial_{trial.number}"),
             'r': r,
             'alpha': alpha,
             'dropout': dropout,
@@ -49,11 +49,9 @@ def main(cfg: DictConfig):
         }
 
         try:
-            result = trainer.train(
-                [s.to_dict() for s in train_ds.samples],
-                [s.to_dict() for s in val_ds.samples],
-                train_config
-            )
+            train_data = [s.to_dict() for s in train_ds.samples]
+            val_data = [s.to_dict() for s in val_ds.samples]
+            result = trainer.train(train_data, val_data, train_config)
             return result['bleu']
 
         except Exception as e:
@@ -70,6 +68,7 @@ def main(cfg: DictConfig):
 
     trials_df = study.trials_dataframe()
     results_path = Path(cfg.paths.output_dir) / "optuna_stage1_results.csv"
+    results_path.parent.mkdir(parents=True, exist_ok=True)
     trials_df.to_csv(results_path, index=False)
 
     best_trial = study.best_trial
