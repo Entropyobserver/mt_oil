@@ -1,0 +1,343 @@
+2025-11-29 18:37:06,840 - data_scaling - INFO - ================================================================================
+2025-11-29 18:37:06,844 - data_scaling - INFO - EXPERIMENT 1: DATA SCALING ANALYSIS
+2025-11-29 18:37:06,844 - data_scaling - INFO - ================================================================================
+2025-11-29 18:37:06,845 - data_scaling - INFO - Using HF cache: /crex/proj/uppmax2025-3-5/private/yaxj1/hf_cache
+2025-11-29 18:37:11,541 - data_scaling - INFO - Loading data splits
+2025-11-29 18:37:11,765 - data_scaling - INFO - Train: 13622 samples
+2025-11-29 18:37:11,765 - data_scaling - INFO - Val: 1702 samples
+2025-11-29 18:37:11,765 - data_scaling - INFO - Test: 1704 samples
+2025-11-29 18:37:11,766 - data_scaling - INFO - Data sizes to test: [100, 500, 1000, 2000, 4000, 6000, 8000, 10000, 13622]
+2025-11-29 18:37:11,766 - data_scaling - INFO - 
+============================================================
+2025-11-29 18:37:11,766 - data_scaling - INFO - Experiment 1/9: Training with 100 samples
+2025-11-29 18:37:11,766 - data_scaling - INFO - ============================================================
+2025-11-29 18:37:16,783 - data_scaling - INFO - Starting training...
+[2025-11-29 18:37:36,990][accelerate.utils.modeling][INFO] - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+trainable params: 4,718,592 || all params: 1,144,502,272 || trainable%: 0.41228332310379195
+[2025-11-29 18:37:47,412][accelerate.utils.other][WARNING] - Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+{'train_runtime': 51.0362, 'train_samples_per_second': 5.878, 'train_steps_per_second': 0.353, 'train_loss': 2.6954589419894748, 'epoch': 2.88}
+2025-11-29 18:55:32,834 - data_scaling - INFO - Generating predictions...
+2025-11-29 19:07:37,556 - data_scaling - INFO - Results for size 100:
+2025-11-29 19:07:37,703 - data_scaling - INFO -   Val  - BLEU: 0.1173, chrF: 29.15
+2025-11-29 19:07:37,703 - data_scaling - INFO -   Test - BLEU: 0.1188, chrF: 29.56
+2025-11-29 19:07:37,704 - data_scaling - INFO -   *** NEW BEST MODEL ***
+2025-11-29 19:07:37,744 - data_scaling - INFO - 
+============================================================
+2025-11-29 19:07:37,745 - data_scaling - INFO - Experiment 2/9: Training with 500 samples
+2025-11-29 19:07:37,745 - data_scaling - INFO - ============================================================
+2025-11-29 19:07:42,759 - data_scaling - INFO - Starting training...
+[2025-11-29 19:07:51,878][accelerate.utils.modeling][INFO] - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+trainable params: 4,718,592 || all params: 1,144,502,272 || trainable%: 0.41228332310379195
+[2025-11-29 19:08:01,275][accelerate.utils.other][WARNING] - Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+{'loss': 2.2739, 'learning_rate': 0.00025, 'epoch': 1.6}
+{'train_runtime': 217.8847, 'train_samples_per_second': 6.884, 'train_steps_per_second': 0.427, 'train_loss': 1.6738382975260417, 'epoch': 2.98}
+2025-11-29 19:27:05,366 - data_scaling - INFO - Generating predictions...
+2025-11-29 19:39:18,274 - data_scaling - INFO - Results for size 500:
+2025-11-29 19:39:18,369 - data_scaling - INFO -   Val  - BLEU: 0.5536, chrF: 71.76
+2025-11-29 19:39:18,370 - data_scaling - INFO -   Test - BLEU: 0.5653, chrF: 72.57
+2025-11-29 19:39:18,370 - data_scaling - INFO -   *** NEW BEST MODEL ***
+2025-11-29 19:39:18,459 - data_scaling - INFO - 
+============================================================
+2025-11-29 19:39:18,459 - data_scaling - INFO - Experiment 3/9: Training with 1000 samples
+2025-11-29 19:39:18,459 - data_scaling - INFO - ============================================================
+2025-11-29 19:39:24,183 - data_scaling - INFO - Starting training...
+[2025-11-29 19:39:34,383][accelerate.utils.modeling][INFO] - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+trainable params: 4,718,592 || all params: 1,144,502,272 || trainable%: 0.41228332310379195
+[2025-11-29 19:39:45,082][accelerate.utils.other][WARNING] - Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+{'loss': 2.2988, 'learning_rate': 0.00025, 'epoch': 0.8}
+{'loss': 0.9858, 'learning_rate': 0.0005, 'epoch': 1.6}
+{'loss': 0.7681, 'learning_rate': 0.00020930232558139536, 'epoch': 2.4}
+{'train_runtime': 437.7628, 'train_samples_per_second': 6.853, 'train_steps_per_second': 0.425, 'train_loss': 1.2353982207595662, 'epoch': 2.98}
+2025-11-29 20:02:53,749 - data_scaling - INFO - Generating predictions...
+2025-11-29 20:15:20,225 - data_scaling - INFO - Results for size 1000:
+2025-11-29 20:15:20,299 - data_scaling - INFO -   Val  - BLEU: 0.5972, chrF: 74.79
+2025-11-29 20:15:20,299 - data_scaling - INFO -   Test - BLEU: 0.6108, chrF: 75.70
+2025-11-29 20:15:20,300 - data_scaling - INFO -   *** NEW BEST MODEL ***
+2025-11-29 20:15:20,402 - data_scaling - INFO - 
+============================================================
+2025-11-29 20:15:20,402 - data_scaling - INFO - Experiment 4/9: Training with 2000 samples
+2025-11-29 20:15:20,403 - data_scaling - INFO - ============================================================
+2025-11-29 20:15:26,623 - data_scaling - INFO - Starting training...
+[2025-11-29 20:15:36,940][accelerate.utils.modeling][INFO] - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+trainable params: 4,718,592 || all params: 1,144,502,272 || trainable%: 0.41228332310379195
+[2025-11-29 20:15:46,950][accelerate.utils.other][WARNING] - Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+{'loss': 2.3147, 'learning_rate': 0.00025, 'epoch': 0.4}
+{'loss': 0.9948, 'learning_rate': 0.0005, 'epoch': 0.8}
+{'loss': 0.7759, 'learning_rate': 0.00040909090909090913, 'epoch': 1.2}
+{'loss': 0.7537, 'learning_rate': 0.0003181818181818182, 'epoch': 1.6}
+{'eval_loss': 0.6504905819892883, 'eval_bleu': 0.6098418669850685, 'eval_chrf': 75.4830447522658, 'eval_runtime': 937.6653, 'eval_samples_per_second': 1.815, 'eval_steps_per_second': 0.454, 'epoch': 1.6}
+{'loss': 0.6642, 'learning_rate': 0.00022727272727272727, 'epoch': 2.0}
+{'loss': 0.6326, 'learning_rate': 0.00013636363636363637, 'epoch': 2.4}
+{'loss': 0.6337, 'learning_rate': 4.545454545454546e-05, 'epoch': 2.8}
+{'train_runtime': 1811.3617, 'train_samples_per_second': 3.312, 'train_steps_per_second': 0.207, 'train_loss': 0.9442327041625976, 'epoch': 3.0}
+2025-11-29 21:01:18,802 - data_scaling - INFO - Generating predictions...
+2025-11-29 21:13:04,884 - data_scaling - INFO - Results for size 2000:
+2025-11-29 21:13:04,917 - data_scaling - INFO -   Val  - BLEU: 0.6243, chrF: 76.52
+2025-11-29 21:13:04,917 - data_scaling - INFO -   Test - BLEU: 0.6325, chrF: 77.39
+2025-11-29 21:13:04,917 - data_scaling - INFO -   *** NEW BEST MODEL ***
+2025-11-29 21:13:04,928 - data_scaling - INFO - 
+============================================================
+2025-11-29 21:13:04,928 - data_scaling - INFO - Experiment 5/9: Training with 4000 samples
+2025-11-29 21:13:04,928 - data_scaling - INFO - ============================================================
+2025-11-29 21:13:11,210 - data_scaling - INFO - Starting training...
+[2025-11-29 21:13:21,518][accelerate.utils.modeling][INFO] - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+trainable params: 4,718,592 || all params: 1,144,502,272 || trainable%: 0.41228332310379195
+[2025-11-29 21:13:32,360][accelerate.utils.other][WARNING] - Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+{'loss': 2.3414, 'learning_rate': 0.00025, 'epoch': 0.2}
+{'loss': 0.9803, 'learning_rate': 0.0005, 'epoch': 0.4}
+{'loss': 0.7631, 'learning_rate': 0.0004615384615384616, 'epoch': 0.6}
+{'loss': 0.6737, 'learning_rate': 0.0004230769230769231, 'epoch': 0.8}
+{'eval_loss': 0.6526620388031006, 'eval_bleu': 0.6079802909673054, 'eval_chrf': 75.54232900655894, 'eval_runtime': 924.5043, 'eval_samples_per_second': 1.841, 'eval_steps_per_second': 0.461, 'epoch': 0.8}
+{'loss': 0.7103, 'learning_rate': 0.00038461538461538467, 'epoch': 1.0}
+{'loss': 0.655, 'learning_rate': 0.00034615384615384613, 'epoch': 1.2}
+{'loss': 0.5998, 'learning_rate': 0.0003076923076923077, 'epoch': 1.4}
+{'loss': 0.6257, 'learning_rate': 0.0002692307692307692, 'epoch': 1.6}
+{'eval_loss': 0.5946879982948303, 'eval_bleu': 0.6331176837527225, 'eval_chrf': 77.19623679414916, 'eval_runtime': 918.8349, 'eval_samples_per_second': 1.852, 'eval_steps_per_second': 0.464, 'epoch': 1.6}
+{'loss': 0.6075, 'learning_rate': 0.0002307692307692308, 'epoch': 1.8}
+{'loss': 0.6047, 'learning_rate': 0.00019230769230769233, 'epoch': 2.0}
+{'loss': 0.5907, 'learning_rate': 0.00015384615384615385, 'epoch': 2.2}
+{'loss': 0.5594, 'learning_rate': 0.0001153846153846154, 'epoch': 2.4}
+{'eval_loss': 0.5814486742019653, 'eval_bleu': 0.6463271221114087, 'eval_chrf': 77.97536030244964, 'eval_runtime': 918.9813, 'eval_samples_per_second': 1.852, 'eval_steps_per_second': 0.464, 'epoch': 2.4}
+{'loss': 0.559, 'learning_rate': 7.692307692307693e-05, 'epoch': 2.6}
+{'loss': 0.5509, 'learning_rate': 3.846153846153846e-05, 'epoch': 2.8}
+{'loss': 0.5435, 'learning_rate': 0.0, 'epoch': 3.0}
+{'train_runtime': 4503.7725, 'train_samples_per_second': 2.664, 'train_steps_per_second': 0.167, 'train_loss': 0.757661875406901, 'epoch': 3.0}
+2025-11-29 22:43:46,979 - data_scaling - INFO - Generating predictions...
+2025-11-29 22:55:19,875 - data_scaling - INFO - Results for size 4000:
+2025-11-29 22:55:19,888 - data_scaling - INFO -   Val  - BLEU: 0.6331, chrF: 77.20
+2025-11-29 22:55:19,888 - data_scaling - INFO -   Test - BLEU: 0.6426, chrF: 78.00
+2025-11-29 22:55:19,888 - data_scaling - INFO -   *** NEW BEST MODEL ***
+2025-11-29 22:55:19,901 - data_scaling - INFO - 
+============================================================
+2025-11-29 22:55:19,901 - data_scaling - INFO - Experiment 6/9: Training with 6000 samples
+2025-11-29 22:55:19,901 - data_scaling - INFO - ============================================================
+2025-11-29 22:55:25,665 - data_scaling - INFO - Starting training...
+[2025-11-29 22:55:35,086][accelerate.utils.modeling][INFO] - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+trainable params: 4,718,592 || all params: 1,144,502,272 || trainable%: 0.41228332310379195
+[2025-11-29 22:55:45,793][accelerate.utils.other][WARNING] - Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+{'loss': 2.2432, 'learning_rate': 0.00025, 'epoch': 0.13}
+{'loss': 0.9679, 'learning_rate': 0.0005, 'epoch': 0.27}
+{'loss': 0.7792, 'learning_rate': 0.00047560975609756096, 'epoch': 0.4}
+{'loss': 0.7484, 'learning_rate': 0.00045121951219512197, 'epoch': 0.53}
+{'eval_loss': 0.6458683609962463, 'eval_bleu': 0.6106562822963034, 'eval_chrf': 75.71444214760022, 'eval_runtime': 916.5248, 'eval_samples_per_second': 1.857, 'eval_steps_per_second': 0.465, 'epoch': 0.53}
+{'loss': 0.647, 'learning_rate': 0.0004273170731707317, 'epoch': 0.67}
+{'loss': 0.663, 'learning_rate': 0.0004029268292682927, 'epoch': 0.8}
+{'loss': 0.6373, 'learning_rate': 0.00037853658536585367, 'epoch': 0.93}
+{'loss': 0.6125, 'learning_rate': 0.0003541463414634146, 'epoch': 1.07}
+{'eval_loss': 0.5939238667488098, 'eval_bleu': 0.6373988038411585, 'eval_chrf': 77.46978226182458, 'eval_runtime': 918.978, 'eval_samples_per_second': 1.852, 'eval_steps_per_second': 0.464, 'epoch': 1.07}
+{'loss': 0.6342, 'learning_rate': 0.00032975609756097563, 'epoch': 1.2}
+{'loss': 0.5752, 'learning_rate': 0.0003053658536585366, 'epoch': 1.33}
+{'loss': 0.5895, 'learning_rate': 0.0002809756097560976, 'epoch': 1.47}
+{'loss': 0.5512, 'learning_rate': 0.00025658536585365855, 'epoch': 1.6}
+{'eval_loss': 0.5738492608070374, 'eval_bleu': 0.6482356291883978, 'eval_chrf': 78.09878391729414, 'eval_runtime': 914.4264, 'eval_samples_per_second': 1.861, 'eval_steps_per_second': 0.466, 'epoch': 1.6}
+{'loss': 0.5728, 'learning_rate': 0.00023219512195121953, 'epoch': 1.73}
+{'loss': 0.5483, 'learning_rate': 0.00020780487804878048, 'epoch': 1.87}
+{'loss': 0.6088, 'learning_rate': 0.00018341463414634147, 'epoch': 2.0}
+{'loss': 0.5291, 'learning_rate': 0.00015902439024390245, 'epoch': 2.13}
+{'eval_loss': 0.5572273135185242, 'eval_bleu': 0.6529024319937774, 'eval_chrf': 78.33550925074667, 'eval_runtime': 909.7909, 'eval_samples_per_second': 1.871, 'eval_steps_per_second': 0.468, 'epoch': 2.13}
+{'loss': 0.5522, 'learning_rate': 0.00013463414634146343, 'epoch': 2.27}
+{'loss': 0.5238, 'learning_rate': 0.0001102439024390244, 'epoch': 2.4}
+{'loss': 0.526, 'learning_rate': 8.585365853658538e-05, 'epoch': 2.53}
+{'loss': 0.5202, 'learning_rate': 6.146341463414634e-05, 'epoch': 2.67}
+{'eval_loss': 0.5506778955459595, 'eval_bleu': 0.6567953061809221, 'eval_chrf': 78.72201864475252, 'eval_runtime': 920.3441, 'eval_samples_per_second': 1.849, 'eval_steps_per_second': 0.463, 'epoch': 2.67}
+{'loss': 0.5221, 'learning_rate': 3.707317073170732e-05, 'epoch': 2.8}
+{'loss': 0.548, 'learning_rate': 1.2682926829268294e-05, 'epoch': 2.93}
+{'train_runtime': 7190.6569, 'train_samples_per_second': 2.503, 'train_steps_per_second': 0.156, 'train_loss': 0.6822342859903971, 'epoch': 3.0}
+2025-11-30 01:10:56,584 - data_scaling - INFO - Generating predictions...
+2025-11-30 01:22:48,720 - data_scaling - INFO - Results for size 6000:
+2025-11-30 01:22:48,732 - data_scaling - INFO -   Val  - BLEU: 0.6529, chrF: 78.34
+2025-11-30 01:22:48,732 - data_scaling - INFO -   Test - BLEU: 0.6588, chrF: 78.96
+2025-11-30 01:22:48,732 - data_scaling - INFO -   *** NEW BEST MODEL ***
+2025-11-30 01:22:48,742 - data_scaling - INFO - 
+============================================================
+2025-11-30 01:22:48,742 - data_scaling - INFO - Experiment 7/9: Training with 8000 samples
+2025-11-30 01:22:48,742 - data_scaling - INFO - ============================================================
+2025-11-30 01:22:54,635 - data_scaling - INFO - Starting training...
+[2025-11-30 01:23:04,003][accelerate.utils.modeling][INFO] - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+trainable params: 4,718,592 || all params: 1,144,502,272 || trainable%: 0.41228332310379195
+[2025-11-30 01:23:15,867][accelerate.utils.other][WARNING] - Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+{'loss': 2.2501, 'learning_rate': 0.00025, 'epoch': 0.1}
+{'loss': 0.9609, 'learning_rate': 0.0005, 'epoch': 0.2}
+{'loss': 0.7833, 'learning_rate': 0.00048214285714285715, 'epoch': 0.3}
+{'loss': 0.7315, 'learning_rate': 0.00046428571428571433, 'epoch': 0.4}
+{'eval_loss': 0.6473243236541748, 'eval_bleu': 0.6119184201671265, 'eval_chrf': 75.9491847883359, 'eval_runtime': 943.6245, 'eval_samples_per_second': 1.804, 'eval_steps_per_second': 0.451, 'epoch': 0.4}
+{'loss': 0.6543, 'learning_rate': 0.00044642857142857147, 'epoch': 0.5}
+{'loss': 0.6579, 'learning_rate': 0.00042857142857142855, 'epoch': 0.6}
+{'loss': 0.6238, 'learning_rate': 0.0004107142857142857, 'epoch': 0.7}
+{'loss': 0.6531, 'learning_rate': 0.0003928571428571429, 'epoch': 0.8}
+{'eval_loss': 0.5901345014572144, 'eval_bleu': 0.6370433666739053, 'eval_chrf': 77.38741306762014, 'eval_runtime': 914.5063, 'eval_samples_per_second': 1.861, 'eval_steps_per_second': 0.466, 'epoch': 0.8}
+{'loss': 0.6705, 'learning_rate': 0.000375, 'epoch': 0.9}
+{'loss': 0.5861, 'learning_rate': 0.00035714285714285714, 'epoch': 1.0}
+{'loss': 0.5607, 'learning_rate': 0.00033928571428571433, 'epoch': 1.1}
+{'loss': 0.584, 'learning_rate': 0.00032142857142857147, 'epoch': 1.2}
+{'eval_loss': 0.5670096278190613, 'eval_bleu': 0.6465305728246766, 'eval_chrf': 78.1638645424022, 'eval_runtime': 911.6649, 'eval_samples_per_second': 1.867, 'eval_steps_per_second': 0.467, 'epoch': 1.2}
+{'loss': 0.5758, 'learning_rate': 0.00030357142857142855, 'epoch': 1.3}
+{'loss': 0.5671, 'learning_rate': 0.0002857142857142857, 'epoch': 1.4}
+{'loss': 0.5352, 'learning_rate': 0.00026785714285714287, 'epoch': 1.5}
+{'loss': 0.5147, 'learning_rate': 0.00025, 'epoch': 1.6}
+{'eval_loss': 0.5551479458808899, 'eval_bleu': 0.6553259374868109, 'eval_chrf': 78.47675980581181, 'eval_runtime': 917.9314, 'eval_samples_per_second': 1.854, 'eval_steps_per_second': 0.464, 'epoch': 1.6}
+{'loss': 0.5936, 'learning_rate': 0.00023214285714285717, 'epoch': 1.7}
+{'loss': 0.53, 'learning_rate': 0.00021428571428571427, 'epoch': 1.8}
+{'loss': 0.5666, 'learning_rate': 0.00019642857142857144, 'epoch': 1.9}
+{'loss': 0.5724, 'learning_rate': 0.00017857142857142857, 'epoch': 2.0}
+{'eval_loss': 0.541538417339325, 'eval_bleu': 0.6611580776035375, 'eval_chrf': 78.94342424026445, 'eval_runtime': 915.9999, 'eval_samples_per_second': 1.858, 'eval_steps_per_second': 0.465, 'epoch': 2.0}
+{'loss': 0.4976, 'learning_rate': 0.00016107142857142855, 'epoch': 2.1}
+{'loss': 0.5068, 'learning_rate': 0.00014321428571428571, 'epoch': 2.2}
+{'loss': 0.4974, 'learning_rate': 0.00012535714285714288, 'epoch': 2.3}
+{'loss': 0.5035, 'learning_rate': 0.0001075, 'epoch': 2.4}
+{'eval_loss': 0.539192795753479, 'eval_bleu': 0.6611051868360472, 'eval_chrf': 78.86784459327562, 'eval_runtime': 916.9987, 'eval_samples_per_second': 1.856, 'eval_steps_per_second': 0.465, 'epoch': 2.4}
+{'loss': 0.5402, 'learning_rate': 8.964285714285715e-05, 'epoch': 2.5}
+{'loss': 0.5201, 'learning_rate': 7.17857142857143e-05, 'epoch': 2.6}
+{'loss': 0.516, 'learning_rate': 5.392857142857143e-05, 'epoch': 2.7}
+{'loss': 0.5443, 'learning_rate': 3.607142857142858e-05, 'epoch': 2.8}
+{'eval_loss': 0.535371720790863, 'eval_bleu': 0.6623468457877516, 'eval_chrf': 78.96906831614645, 'eval_runtime': 910.6131, 'eval_samples_per_second': 1.869, 'eval_steps_per_second': 0.468, 'epoch': 2.8}
+{'loss': 0.509, 'learning_rate': 1.8214285714285715e-05, 'epoch': 2.9}
+{'loss': 0.5178, 'learning_rate': 3.5714285714285716e-07, 'epoch': 3.0}
+{'train_runtime': 9906.4944, 'train_samples_per_second': 2.423, 'train_steps_per_second': 0.151, 'train_loss': 0.6441447766621907, 'epoch': 3.0}
+2025-11-30 04:23:43,631 - data_scaling - INFO - Generating predictions...
+2025-11-30 04:35:28,983 - data_scaling - INFO - Results for size 8000:
+2025-11-30 04:35:28,995 - data_scaling - INFO -   Val  - BLEU: 0.6611, chrF: 78.87
+2025-11-30 04:35:28,995 - data_scaling - INFO -   Test - BLEU: 0.6696, chrF: 79.73
+2025-11-30 04:35:28,996 - data_scaling - INFO -   *** NEW BEST MODEL ***
+2025-11-30 04:35:29,007 - data_scaling - INFO - 
+============================================================
+2025-11-30 04:35:29,008 - data_scaling - INFO - Experiment 8/9: Training with 10000 samples
+2025-11-30 04:35:29,008 - data_scaling - INFO - ============================================================
+2025-11-30 04:35:35,087 - data_scaling - INFO - Starting training...
+[2025-11-30 04:35:44,744][accelerate.utils.modeling][INFO] - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+trainable params: 4,718,592 || all params: 1,144,502,272 || trainable%: 0.41228332310379195
+[2025-11-30 04:35:56,339][accelerate.utils.other][WARNING] - Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+{'loss': 2.2861, 'learning_rate': 0.00025, 'epoch': 0.08}
+{'loss': 0.8933, 'learning_rate': 0.0005, 'epoch': 0.16}
+{'loss': 0.7739, 'learning_rate': 0.0004859154929577465, 'epoch': 0.24}
+{'loss': 0.7456, 'learning_rate': 0.0004718309859154929, 'epoch': 0.32}
+{'eval_loss': 0.645973265171051, 'eval_bleu': 0.6154443745264543, 'eval_chrf': 76.10723074731345, 'eval_runtime': 941.8511, 'eval_samples_per_second': 1.807, 'eval_steps_per_second': 0.452, 'epoch': 0.32}
+{'loss': 0.6669, 'learning_rate': 0.00045774647887323943, 'epoch': 0.4}
+{'loss': 0.7059, 'learning_rate': 0.00044366197183098594, 'epoch': 0.48}
+{'loss': 0.6356, 'learning_rate': 0.0004295774647887324, 'epoch': 0.56}
+{'loss': 0.6333, 'learning_rate': 0.00041549295774647886, 'epoch': 0.64}
+{'eval_loss': 0.5914744734764099, 'eval_bleu': 0.634954410161835, 'eval_chrf': 77.35563784581217, 'eval_runtime': 931.2404, 'eval_samples_per_second': 1.828, 'eval_steps_per_second': 0.457, 'epoch': 0.64}
+{'loss': 0.592, 'learning_rate': 0.00040140845070422537, 'epoch': 0.72}
+{'loss': 0.6303, 'learning_rate': 0.0003873239436619718, 'epoch': 0.8}
+{'loss': 0.5697, 'learning_rate': 0.00037323943661971834, 'epoch': 0.88}
+{'loss': 0.6039, 'learning_rate': 0.0003591549295774648, 'epoch': 0.96}
+{'eval_loss': 0.5634879469871521, 'eval_bleu': 0.6493522348180125, 'eval_chrf': 78.15070034239756, 'eval_runtime': 935.6573, 'eval_samples_per_second': 1.819, 'eval_steps_per_second': 0.455, 'epoch': 0.96}
+{'loss': 0.5605, 'learning_rate': 0.00034507042253521125, 'epoch': 1.04}
+{'loss': 0.5189, 'learning_rate': 0.00033098591549295776, 'epoch': 1.12}
+{'loss': 0.5806, 'learning_rate': 0.00031690140845070427, 'epoch': 1.2}
+{'loss': 0.5644, 'learning_rate': 0.00030281690140845067, 'epoch': 1.28}
+{'eval_loss': 0.548781156539917, 'eval_bleu': 0.6545601871632649, 'eval_chrf': 78.31211768153659, 'eval_runtime': 935.1343, 'eval_samples_per_second': 1.82, 'eval_steps_per_second': 0.456, 'epoch': 1.28}
+{'loss': 0.5225, 'learning_rate': 0.0002887323943661972, 'epoch': 1.36}
+{'loss': 0.5931, 'learning_rate': 0.0002746478873239437, 'epoch': 1.44}
+{'loss': 0.5645, 'learning_rate': 0.00026056338028169015, 'epoch': 1.52}
+{'loss': 0.5502, 'learning_rate': 0.0002464788732394366, 'epoch': 1.6}
+{'eval_loss': 0.5384462475776672, 'eval_bleu': 0.6577517947876084, 'eval_chrf': 78.84574519005169, 'eval_runtime': 922.612, 'eval_samples_per_second': 1.845, 'eval_steps_per_second': 0.462, 'epoch': 1.6}
+{'loss': 0.5606, 'learning_rate': 0.0002323943661971831, 'epoch': 1.68}
+{'loss': 0.5336, 'learning_rate': 0.00021830985915492957, 'epoch': 1.76}
+{'loss': 0.5221, 'learning_rate': 0.00020422535211267606, 'epoch': 1.84}
+{'loss': 0.5076, 'learning_rate': 0.00019014084507042254, 'epoch': 1.92}
+{'eval_loss': 0.5317591428756714, 'eval_bleu': 0.6589531434799959, 'eval_chrf': 78.79810445198191, 'eval_runtime': 918.2043, 'eval_samples_per_second': 1.854, 'eval_steps_per_second': 0.464, 'epoch': 1.92}
+{'loss': 0.5068, 'learning_rate': 0.000176056338028169, 'epoch': 2.0}
+{'loss': 0.4802, 'learning_rate': 0.0001619718309859155, 'epoch': 2.08}
+{'loss': 0.4642, 'learning_rate': 0.00014788732394366196, 'epoch': 2.16}
+{'loss': 0.5154, 'learning_rate': 0.00013380281690140845, 'epoch': 2.24}
+{'eval_loss': 0.5270738005638123, 'eval_bleu': 0.6650476948159576, 'eval_chrf': 79.20402952501203, 'eval_runtime': 924.7325, 'eval_samples_per_second': 1.841, 'eval_steps_per_second': 0.461, 'epoch': 2.24}
+{'loss': 0.5224, 'learning_rate': 0.00011971830985915493, 'epoch': 2.32}
+{'loss': 0.4797, 'learning_rate': 0.00010563380281690141, 'epoch': 2.4}
+{'loss': 0.5162, 'learning_rate': 9.15492957746479e-05, 'epoch': 2.48}
+{'loss': 0.4645, 'learning_rate': 7.746478873239437e-05, 'epoch': 2.56}
+{'eval_loss': 0.5255900025367737, 'eval_bleu': 0.6671302925051847, 'eval_chrf': 79.4307586117884, 'eval_runtime': 921.312, 'eval_samples_per_second': 1.847, 'eval_steps_per_second': 0.462, 'epoch': 2.56}
+{'loss': 0.5189, 'learning_rate': 6.338028169014085e-05, 'epoch': 2.64}
+{'loss': 0.4888, 'learning_rate': 4.929577464788732e-05, 'epoch': 2.72}
+{'loss': 0.5126, 'learning_rate': 3.5211267605633805e-05, 'epoch': 2.8}
+{'loss': 0.5434, 'learning_rate': 2.112676056338028e-05, 'epoch': 2.88}
+{'eval_loss': 0.5220937132835388, 'eval_bleu': 0.6686427340092649, 'eval_chrf': 79.44886481512124, 'eval_runtime': 926.6203, 'eval_samples_per_second': 1.837, 'eval_steps_per_second': 0.46, 'epoch': 2.88}
+{'loss': 0.4572, 'learning_rate': 7.042253521126761e-06, 'epoch': 2.96}
+{'train_runtime': 12721.7084, 'train_samples_per_second': 2.358, 'train_steps_per_second': 0.147, 'train_loss': 0.6143523300170899, 'epoch': 3.0}
+2025-11-30 08:23:29,889 - data_scaling - INFO - Generating predictions...
+2025-11-30 08:35:19,557 - data_scaling - INFO - Results for size 10000:
+2025-11-30 08:35:19,572 - data_scaling - INFO -   Val  - BLEU: 0.6671, chrF: 79.43
+2025-11-30 08:35:19,573 - data_scaling - INFO -   Test - BLEU: 0.6720, chrF: 79.95
+2025-11-30 08:35:19,573 - data_scaling - INFO -   *** NEW BEST MODEL ***
+2025-11-30 08:35:19,610 - data_scaling - INFO - 
+============================================================
+2025-11-30 08:35:19,611 - data_scaling - INFO - Experiment 9/9: Training with 13622 samples
+2025-11-30 08:35:19,611 - data_scaling - INFO - ============================================================
+2025-11-30 08:35:25,762 - data_scaling - INFO - Starting training...
+[2025-11-30 08:35:34,933][accelerate.utils.modeling][INFO] - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+trainable params: 4,718,592 || all params: 1,144,502,272 || trainable%: 0.41228332310379195
+[2025-11-30 08:35:48,314][accelerate.utils.other][WARNING] - Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+{'loss': 2.3019, 'learning_rate': 0.00025, 'epoch': 0.06}
+{'loss': 0.985, 'learning_rate': 0.0005, 'epoch': 0.12}
+{'loss': 0.7484, 'learning_rate': 0.0004898083978801468, 'epoch': 0.18}
+{'loss': 0.6728, 'learning_rate': 0.0004796167957602935, 'epoch': 0.23}
+{'eval_loss': 0.6499167680740356, 'eval_bleu': 0.6106431121615963, 'eval_chrf': 75.8280156934913, 'eval_runtime': 920.0716, 'eval_samples_per_second': 1.85, 'eval_steps_per_second': 0.463, 'epoch': 0.23}
+{'loss': 0.691, 'learning_rate': 0.0004694251936404403, 'epoch': 0.29}
+{'loss': 0.647, 'learning_rate': 0.00045923359152058704, 'epoch': 0.35}
+{'loss': 0.6362, 'learning_rate': 0.0004490419894007338, 'epoch': 0.41}
+{'loss': 0.6743, 'learning_rate': 0.00043885038728088056, 'epoch': 0.47}
+{'eval_loss': 0.5899657607078552, 'eval_bleu': 0.6333512055333324, 'eval_chrf': 77.26617846886816, 'eval_runtime': 914.9394, 'eval_samples_per_second': 1.86, 'eval_steps_per_second': 0.466, 'epoch': 0.47}
+{'loss': 0.6252, 'learning_rate': 0.0004286587851610273, 'epoch': 0.53}
+{'loss': 0.5736, 'learning_rate': 0.00041846718304117407, 'epoch': 0.59}
+{'loss': 0.615, 'learning_rate': 0.00040827558092132086, 'epoch': 0.65}
+{'loss': 0.6257, 'learning_rate': 0.0003980839788014676, 'epoch': 0.7}
+{'eval_loss': 0.559955894947052, 'eval_bleu': 0.6559092654603319, 'eval_chrf': 78.5100262370902, 'eval_runtime': 919.4802, 'eval_samples_per_second': 1.851, 'eval_steps_per_second': 0.463, 'epoch': 0.7}
+{'loss': 0.6271, 'learning_rate': 0.00038789237668161437, 'epoch': 0.76}
+{'loss': 0.5955, 'learning_rate': 0.0003777007745617611, 'epoch': 0.82}
+{'loss': 0.5538, 'learning_rate': 0.0003675091724419079, 'epoch': 0.88}
+{'loss': 0.5674, 'learning_rate': 0.0003573175703220546, 'epoch': 0.94}
+{'eval_loss': 0.549271821975708, 'eval_bleu': 0.6565093580038811, 'eval_chrf': 78.58195450979764, 'eval_runtime': 921.4424, 'eval_samples_per_second': 1.847, 'eval_steps_per_second': 0.462, 'epoch': 0.94}
+{'loss': 0.585, 'learning_rate': 0.0003471259682022014, 'epoch': 1.0}
+{'loss': 0.5269, 'learning_rate': 0.0003369343660823482, 'epoch': 1.06}
+{'loss': 0.526, 'learning_rate': 0.0003267427639624949, 'epoch': 1.12}
+{'loss': 0.5061, 'learning_rate': 0.00031655116184264165, 'epoch': 1.17}
+{'eval_loss': 0.5420472621917725, 'eval_bleu': 0.6611553335456635, 'eval_chrf': 79.10401777814566, 'eval_runtime': 916.0156, 'eval_samples_per_second': 1.858, 'eval_steps_per_second': 0.465, 'epoch': 1.17}
+{'loss': 0.525, 'learning_rate': 0.00030635955972278843, 'epoch': 1.23}
+{'loss': 0.5685, 'learning_rate': 0.00029616795760293517, 'epoch': 1.29}
+{'loss': 0.5115, 'learning_rate': 0.00028597635548308195, 'epoch': 1.35}
+{'loss': 0.542, 'learning_rate': 0.00027578475336322873, 'epoch': 1.41}
+{'eval_loss': 0.5288988947868347, 'eval_bleu': 0.6623716186377491, 'eval_chrf': 79.05337776774735, 'eval_runtime': 919.291, 'eval_samples_per_second': 1.851, 'eval_steps_per_second': 0.463, 'epoch': 1.41}
+{'loss': 0.5118, 'learning_rate': 0.00026559315124337547, 'epoch': 1.47}
+{'loss': 0.5435, 'learning_rate': 0.0002554015491235222, 'epoch': 1.53}
+{'loss': 0.501, 'learning_rate': 0.000245209947003669, 'epoch': 1.59}
+{'loss': 0.5644, 'learning_rate': 0.00023501834488381574, 'epoch': 1.64}
+{'eval_loss': 0.5228614211082458, 'eval_bleu': 0.6652561033747362, 'eval_chrf': 79.10347432796586, 'eval_runtime': 916.7441, 'eval_samples_per_second': 1.857, 'eval_steps_per_second': 0.465, 'epoch': 1.64}
+{'loss': 0.5359, 'learning_rate': 0.0002248267427639625, 'epoch': 1.7}
+{'loss': 0.4869, 'learning_rate': 0.00021463514064410925, 'epoch': 1.76}
+{'loss': 0.5074, 'learning_rate': 0.000204443538524256, 'epoch': 1.82}
+{'loss': 0.5218, 'learning_rate': 0.00019425193640440277, 'epoch': 1.88}
+{'eval_loss': 0.5201687216758728, 'eval_bleu': 0.6672735018993226, 'eval_chrf': 79.4364518223792, 'eval_runtime': 922.322, 'eval_samples_per_second': 1.845, 'eval_steps_per_second': 0.462, 'epoch': 1.88}
+{'loss': 0.5363, 'learning_rate': 0.00018406033428454955, 'epoch': 1.94}
+{'loss': 0.5157, 'learning_rate': 0.00017386873216469629, 'epoch': 2.0}
+{'loss': 0.5032, 'learning_rate': 0.00016367713004484304, 'epoch': 2.06}
+{'loss': 0.5057, 'learning_rate': 0.00015348552792498983, 'epoch': 2.11}
+{'eval_loss': 0.5145429372787476, 'eval_bleu': 0.6699066500176165, 'eval_chrf': 79.58407681495385, 'eval_runtime': 914.3072, 'eval_samples_per_second': 1.862, 'eval_steps_per_second': 0.466, 'epoch': 2.11}
+{'loss': 0.4893, 'learning_rate': 0.00014329392580513656, 'epoch': 2.17}
+{'loss': 0.4827, 'learning_rate': 0.00013310232368528332, 'epoch': 2.23}
+{'loss': 0.504, 'learning_rate': 0.0001229107215654301, 'epoch': 2.29}
+{'loss': 0.4844, 'learning_rate': 0.00011271911944557685, 'epoch': 2.35}
+{'eval_loss': 0.5137790441513062, 'eval_bleu': 0.6733887309817849, 'eval_chrf': 79.78812581491992, 'eval_runtime': 925.8933, 'eval_samples_per_second': 1.838, 'eval_steps_per_second': 0.46, 'epoch': 2.35}
+{'loss': 0.5024, 'learning_rate': 0.0001025275173257236, 'epoch': 2.41}
+{'loss': 0.4877, 'learning_rate': 9.233591520587037e-05, 'epoch': 2.47}
+{'loss': 0.4539, 'learning_rate': 8.214431308601712e-05, 'epoch': 2.52}
+{'loss': 0.5146, 'learning_rate': 7.195271096616388e-05, 'epoch': 2.58}
+{'eval_loss': 0.5110887289047241, 'eval_bleu': 0.6753913973340397, 'eval_chrf': 79.91659401079602, 'eval_runtime': 919.1641, 'eval_samples_per_second': 1.852, 'eval_steps_per_second': 0.463, 'epoch': 2.58}
+{'loss': 0.5048, 'learning_rate': 6.176110884631065e-05, 'epoch': 2.64}
+{'loss': 0.4615, 'learning_rate': 5.1569506726457405e-05, 'epoch': 2.7}
+{'loss': 0.508, 'learning_rate': 4.1377904606604156e-05, 'epoch': 2.76}
+{'loss': 0.4819, 'learning_rate': 3.1186302486750914e-05, 'epoch': 2.82}
+{'eval_loss': 0.5086098909378052, 'eval_bleu': 0.6754785179297017, 'eval_chrf': 79.91766318137299, 'eval_runtime': 912.9477, 'eval_samples_per_second': 1.864, 'eval_steps_per_second': 0.467, 'epoch': 2.82}
+{'loss': 0.4265, 'learning_rate': 2.099470036689768e-05, 'epoch': 2.88}
+{'loss': 0.5088, 'learning_rate': 1.0803098247044436e-05, 'epoch': 2.94}
+{'loss': 0.4478, 'learning_rate': 6.114961271911944e-07, 'epoch': 2.99}
+{'train_runtime': 16942.2487, 'train_samples_per_second': 2.412, 'train_steps_per_second': 0.151, 'train_loss': 0.5866296105976904, 'epoch': 3.0}
+2025-11-30 13:33:30,380 - data_scaling - INFO - Generating predictions...
+2025-11-30 13:45:07,930 - data_scaling - INFO - Results for size 13622:
+2025-11-30 13:45:07,957 - data_scaling - INFO -   Val  - BLEU: 0.6755, chrF: 79.92
+2025-11-30 13:45:07,957 - data_scaling - INFO -   Test - BLEU: 0.6812, chrF: 80.40
+2025-11-30 13:45:07,957 - data_scaling - INFO -   *** NEW BEST MODEL ***
+2025-11-30 13:45:07,968 - data_scaling - INFO - 
+================================================================================
+2025-11-30 13:45:07,968 - data_scaling - INFO - DATA SCALING ANALYSIS COMPLETE
+2025-11-30 13:45:07,968 - data_scaling - INFO - ================================================================================
+2025-11-30 13:45:08,871 - data_scaling - INFO - Results saved to 40_outputs/01_data_scaling/results.csv

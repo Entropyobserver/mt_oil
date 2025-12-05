@@ -1,0 +1,146 @@
+model:
+  name: nllb-200-distilled-600M
+  pretrained_name: facebook/nllb-200-distilled-600M
+  type: seq2seq
+  architecture:
+    encoder_layers: 12
+    decoder_layers: 12
+    d_model: 1024
+    num_heads: 16
+  tokenizer:
+    src_lang: nob_Latn
+    tgt_lang: eng_Latn
+    max_length: 128
+  parameters:
+    total: 600M
+    trainable: null
+  device:
+    dtype: float16
+    device_map: auto
+adapter:
+  method: lora
+  task_type: SEQ_2_SEQ_LM
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.1
+  target_modules:
+  - q_proj
+  - v_proj
+  - k_proj
+  - out_proj
+  bias: none
+  fan_in_fan_out: false
+  trainable_params: ~2M
+  trainable_percentage: ~0.33%
+data:
+  dataset: npd
+  description: Norwegian Petroleum Directorate dataset
+  paths:
+    raw: 00_raw_npd
+    processed: 01_processed_npd
+    splits: 02_final_splits_npd
+    train: 02_final_splits_npd/train.json
+    val: 02_final_splits_npd/val.json
+    test: 02_final_splits_npd/test.json
+  terminology:
+    glossary: terminology/glossary_npd.json
+    use_terminology: false
+  statistics:
+    total_samples: null
+    train_samples: null
+    val_samples: null
+    test_samples: null
+    avg_source_length: null
+    avg_target_length: null
+  preprocessing:
+    min_length: 3
+    max_length: 512
+    remove_duplicates: true
+    lowercase: false
+direction:
+  source_language: Norwegian
+  target_language: English
+  src_lang_code: nob_Latn
+  tgt_lang_code: eng_Latn
+  direction_name: Norwegian to English
+training:
+  num_train_epochs: 3
+  batch_size:
+    train: 4
+    eval: 4
+  gradient_accumulation_steps: 4
+  optimizer:
+    name: adamw
+    learning_rate: 0.0005
+    weight_decay: 0.01
+    betas:
+    - 0.9
+    - 0.999
+    eps: 1.0e-08
+  lr_scheduler:
+    type: linear
+    warmup_steps: 100
+  evaluation:
+    strategy: steps
+    eval_steps: 200
+    metric_for_best_model: bleu
+    greater_is_better: true
+  save:
+    strategy: steps
+    save_steps: 400
+    save_total_limit: 2
+    load_best_model_at_end: true
+  early_stopping:
+    patience: 3
+    threshold: 0.001
+  generation:
+    max_length: 128
+    num_beams: 5
+    predict_with_generate: true
+  compute:
+    fp16: true
+    max_grad_norm: 1.0
+    dataloader_num_workers: 0
+    dataloader_pin_memory: false
+  logging:
+    logging_steps: 50
+    report_to: []
+experiment:
+  name: data_scaling
+  description: Data scaling analysis
+  data_sizes:
+  - 100
+  - 500
+  - 1000
+  - 2000
+  - 4000
+  - 6000
+  - 8000
+  - 10000
+  - full
+  num_runs: 3
+  seeds:
+  - 42
+  - 123
+  - 456
+  tags: []
+project:
+  name: nob-eng-translation
+  version: 1.0.0
+  random_seed: 42
+  seeds:
+  - 42
+  - 123
+  - 456
+paths:
+  data_dir: 60_data
+  output_dir: 40_outputs
+  mlruns_dir: 50_mlruns
+  models_dir: 70_models
+mlflow:
+  enable: true
+  tracking_uri: file:./${paths.mlruns_dir}
+  experiment_name: ${project.name}
+logging:
+  level: INFO
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'

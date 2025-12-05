@@ -1,0 +1,22 @@
+dataset: mixed
+description: Mixed NPD and EQU datasets
+
+paths:
+  raw: 03_merged_final                    
+  processed: 01_processed_mixed           
+  splits: 03_final_splits                 
+  train: 03_final_splits/train.json       
+  val: 03_final_splits/val.json           
+  test: 03_final_splits/test.json        
+
+statistics:
+  total_samples: null
+  train_samples: null
+  val_samples: null
+  test_samples: null
+
+preprocessing:
+  min_length: 3
+  max_length: 512
+  remove_duplicates: true
+  lowercase: false

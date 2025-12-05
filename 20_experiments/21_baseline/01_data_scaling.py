@@ -1,20 +1,45 @@
+import os
 import sys
 from pathlib import Path
-import json
-import pandas as pd
-import hydra
-from omegaconf import DictConfig, OmegaConf
 
-project_root = Path(__file__).parent.parent.parent
+HF_CACHE_DIR = "/crex/proj/uppmax2025-3-5/private/yaxj1/hf_cache"
+os.environ['HF_HOME'] = HF_CACHE_DIR
+os.environ['TRANSFORMERS_CACHE'] = HF_CACHE_DIR
+os.environ['HF_DATASETS_CACHE'] = HF_CACHE_DIR
+os.environ['TORCH_HOME'] = HF_CACHE_DIR
+
+script_dir = Path(__file__).resolve().parent
+project_root = script_dir.parent.parent
 src_path = project_root / "10_src"
+
+if not src_path.exists():
+    raise RuntimeError(f"Source path does not exist: {src_path}")
+
 sys.path.insert(0, str(src_path))
 
-from data.data_loader import DataManager
-from models.model_factory import ModelFactory
-from evaluation.base_evaluator import BaseEvaluator
-from utils.seed_manager import SeedManager
-from utils.logger import Logger
-from utils.visualization import Visualizer
+import json
+import importlib
+import pandas as pd
+import hydra
+from omegaconf import DictConfig
+
+data_loader_module = importlib.import_module('11_data.data_loader')
+DataManager = data_loader_module.DataManager
+
+model_factory_module = importlib.import_module('12_models.model_factory')
+ModelFactory = model_factory_module.ModelFactory
+
+evaluator_module = importlib.import_module('13_evaluation.base_evaluator')
+BaseEvaluator = evaluator_module.BaseEvaluator
+
+seed_module = importlib.import_module('14_utils.seed_manager')
+SeedManager = seed_module.SeedManager
+
+logger_module = importlib.import_module('14_utils.logger')
+Logger = logger_module.Logger
+
+viz_module = importlib.import_module('14_utils.visualization')
+Visualizer = viz_module.Visualizer
 
 
 @hydra.main(version_base=None, config_path="../../00_configs", config_name="00_config")
@@ -27,9 +52,9 @@ def main(cfg: DictConfig):
     logger.info("="*80)
     logger.info("EXPERIMENT 1: DATA SCALING ANALYSIS")
     logger.info("="*80)
+    logger.info(f"Using HF cache: {HF_CACHE_DIR}")
     
     SeedManager.set_seed(cfg.project.random_seed)
-    logger.info(f"Random seed: {cfg.project.random_seed}")
     
     data_manager = DataManager(cfg)
     evaluator = BaseEvaluator(use_comet=False)
@@ -60,7 +85,6 @@ def main(cfg: DictConfig):
         logger.info(f"{'='*60}")
         
         train_subset = train_ds.subset(size, seed=cfg.project.random_seed)
-        logger.info(f"Training subset created: {len(train_subset)} samples")
         
         trainer = ModelFactory.create_trainer(cfg, trainer_type='lora')
         
@@ -90,7 +114,7 @@ def main(cfg: DictConfig):
             logger.info("Starting training...")
             train_result = trainer.train(train_data, val_data, train_config)
             
-            logger.info("Generating predictions on test set...")
+            logger.info("Generating predictions...")
             test_predictions = trainer.generate_predictions(
                 train_result['model'], 
                 test_ds,
@@ -100,7 +124,6 @@ def main(cfg: DictConfig):
             sources = [s.source for s in test_ds.samples]
             references = [s.target for s in test_ds.samples]
             
-            logger.info("Evaluating predictions...")
             test_metrics = evaluator.evaluate_all(sources, test_predictions, references)
             
             result_entry = {
@@ -164,19 +187,8 @@ def main(cfg: DictConfig):
     with open(results_json, 'w') as f:
         json.dump(results, f, indent=2)
     
-    summary_df = results_df.groupby('data_size').agg({
-        'test_bleu': ['mean', 'std'],
-        'test_chrf': ['mean', 'std']
-    }).round(4)
-    
-    logger.info("\nSummary Statistics:")
-    logger.info(f"\n{summary_df}")
-    
     if len(results_df[~results_df.get('failed', False)]) > 1:
-        logger.info("\nGenerating visualizations...")
-        
         valid_df = results_df[~results_df.get('failed', False)]
-        
         visualizer.plot_learning_curve(
             valid_df,
             x_col='data_size',
@@ -185,7 +197,7 @@ def main(cfg: DictConfig):
             title="Data Scaling Analysis",
             xlabel="Training Data Size"
         )
-        logger.info(f"Learning curve saved to {output_dir / 'learning_curve.png'}")
+        logger.info(f"Learning curve saved")
     
     if best_model_path:
         logger.info(f"\nBest Model:")
@@ -203,7 +215,6 @@ def main(cfg: DictConfig):
         with open(output_dir / "best_model.json", 'w') as f:
             json.dump(best_model_info, f, indent=2)
     
-    logger.info(f"\nAll outputs saved to: {output_dir}")
     logger.info("Experiment 1 completed successfully!")
 
 

@@ -1,0 +1,23 @@
+# 00_configs/03_data/02_equ.yaml
+dataset: equ
+description: European Union dataset for Norwegian-English
+
+paths:
+  raw: 00_raw_equ                       
+  processed: 01_processed_equ           
+  splits: 02_final_splits_equ           
+  train: 02_final_splits_equ/train.json 
+  val: 02_final_splits_equ/val.json     
+  test: 02_final_splits_equ/test.json   
+
+statistics:
+  total_samples: null
+  train_samples: null
+  val_samples: null
+  test_samples: null
+
+preprocessing:
+  min_length: 3
+  max_length: 512
+  remove_duplicates: true
+  lowercase: false

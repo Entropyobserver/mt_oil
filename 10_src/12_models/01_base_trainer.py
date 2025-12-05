@@ -1,6 +1,7 @@
 import os
 from abc import ABC, abstractmethod
 from typing import Dict, List, Optional
+from pathlib import Path
 
 import torch
 import numpy as np
@@ -207,3 +208,33 @@ class BaseTrainer(ABC):
             "chrf": eval_result.get("eval_chrf", 0.0),
             "loss": eval_result.get("eval_loss", 0.0)
         }
+    
+    def generate_predictions(self, model, dataset, batch_size=8):
+        predictions = []
+        device = next(model.parameters()).device
+        
+        for i in range(0, len(dataset), batch_size):
+            batch_samples = dataset.samples[i:i+batch_size]
+            batch_sources = [s.source for s in batch_samples]
+            
+            self.tokenizer.src_lang = self.src_lang
+            inputs = self.tokenizer(
+                batch_sources,
+                return_tensors="pt",
+                max_length=128,
+                truncation=True,
+                padding=True
+            )
+            inputs = {k: v.to(device) for k, v in inputs.items()}
+            
+            with torch.no_grad():
+                generated = model.generate(
+                    **inputs,
+                    max_length=128,
+                    num_beams=5
+                )
+            
+            batch_preds = self.tokenizer.batch_decode(generated, skip_special_tokens=True)
+            predictions.extend(batch_preds)
+        
+        return predictions

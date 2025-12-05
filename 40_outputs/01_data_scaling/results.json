@@ -1,0 +1,83 @@
+[
+  {
+    "data_size": 100,
+    "val_bleu": 0.11732238790318834,
+    "val_chrf": 29.15308984068187,
+    "val_loss": 2.6169042587280273,
+    "test_bleu": 0.11883374186799264,
+    "test_chrf": 29.5613904072158,
+    "model_path": "40_outputs/01_data_scaling/size_100/training/final_model"
+  },
+  {
+    "data_size": 500,
+    "val_bleu": 0.553648604205168,
+    "val_chrf": 71.7622624822632,
+    "val_loss": 0.7814079523086548,
+    "test_bleu": 0.5653345965005812,
+    "test_chrf": 72.57409161910809,
+    "model_path": "40_outputs/01_data_scaling/size_500/training/final_model"
+  },
+  {
+    "data_size": 1000,
+    "val_bleu": 0.5972211620095265,
+    "val_chrf": 74.7886640344725,
+    "val_loss": 0.6824697256088257,
+    "test_bleu": 0.6107620983222456,
+    "test_chrf": 75.6981826864116,
+    "model_path": "40_outputs/01_data_scaling/size_1000/training/final_model"
+  },
+  {
+    "data_size": 2000,
+    "val_bleu": 0.6242703642506976,
+    "val_chrf": 76.5167917408306,
+    "val_loss": 0.626056432723999,
+    "test_bleu": 0.6325367780579666,
+    "test_chrf": 77.3941473117847,
+    "model_path": "40_outputs/01_data_scaling/size_2000/training/final_model"
+  },
+  {
+    "data_size": 4000,
+    "val_bleu": 0.6331176837527225,
+    "val_chrf": 77.19623679414916,
+    "val_loss": 0.5946879982948303,
+    "test_bleu": 0.6425626988108374,
+    "test_chrf": 77.9985974995445,
+    "model_path": "40_outputs/01_data_scaling/size_4000/training/final_model"
+  },
+  {
+    "data_size": 6000,
+    "val_bleu": 0.6529024319937774,
+    "val_chrf": 78.33550925074667,
+    "val_loss": 0.5572273135185242,
+    "test_bleu": 0.6588279555532638,
+    "test_chrf": 78.95632521371014,
+    "model_path": "40_outputs/01_data_scaling/size_6000/training/final_model"
+  },
+  {
+    "data_size": 8000,
+    "val_bleu": 0.6611051868360472,
+    "val_chrf": 78.86784459327562,
+    "val_loss": 0.539192795753479,
+    "test_bleu": 0.6695652258567444,
+    "test_chrf": 79.72556078834772,
+    "model_path": "40_outputs/01_data_scaling/size_8000/training/final_model"
+  },
+  {
+    "data_size": 10000,
+    "val_bleu": 0.6671302925051847,
+    "val_chrf": 79.4307586117884,
+    "val_loss": 0.5255900025367737,
+    "test_bleu": 0.6719594253560947,
+    "test_chrf": 79.95154140337362,
+    "model_path": "40_outputs/01_data_scaling/size_10000/training/final_model"
+  },
+  {
+    "data_size": 13622,
+    "val_bleu": 0.6754785179297017,
+    "val_chrf": 79.91766318137299,
+    "val_loss": 0.5086098909378052,
+    "test_bleu": 0.6812128848795386,
+    "test_chrf": 80.40404583181076,
+    "model_path": "40_outputs/01_data_scaling/size_13622/training/final_model"
+  }
+]

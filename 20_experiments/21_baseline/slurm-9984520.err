@@ -1,0 +1,10 @@
+
+[notice] A new release of pip is available: 25.2 -> 25.3
+[notice] To update, run: pip install --upgrade pip
+Could not override 'model'.
+To append to your config use +model=nllb_600m
+Key 'model' is not in struct
+    full_key: model
+    object_type=dict
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.

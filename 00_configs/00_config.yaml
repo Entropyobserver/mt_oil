@@ -1,34 +1,42 @@
 defaults:
-  - model: nllb_600m
-  - adapter: lora_r16
-  - data: npd
-  - training: standard
+  - model: 01_nllb_600m
+  - adapter: 02_lora_r16
+  - data: 01_npd
+  - direction: 01_nob_to_eng
+  - training: 01_standard
+  - experiment: 01_data_scaling
+  - override hydra/hydra_logging: default
+  - override hydra/job_logging: default
   - _self_
 
 project:
   name: nob-eng-translation
   version: 1.0.0
   random_seed: 42
+  seeds: [42, 123, 456]
 
 paths:
-  data_dir: data
-  output_dir: outputs
-  mlruns_dir: mlruns
-  models_dir: models
+  data_dir: 60_data
+  output_dir: 40_outputs
+  mlruns_dir: 50_mlruns
+  models_dir: 70_models
+
+mlflow:
+  enable: true
+  tracking_uri: "file:./${paths.mlruns_dir}"
+  experiment_name: "${project.name}"
 
 logging:
   level: INFO
   format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-  file: "${paths.output_dir}/${experiment.name}/run.log"
 
 experiment:
-  name: default
+  name: data_scaling
   tags: []
-  description: ""
+  description: "Data scaling analysis"
 
 hydra:
+  job:
+    chdir: false
   run:
     dir: ${paths.output_dir}/${experiment.name}/runs/${now:%Y-%m-%d_%H-%M-%S}
-  sweep:
-    dir: ${paths.output_dir}/${experiment.name}/sweeps
-    subdir: ${hydra.job.num}

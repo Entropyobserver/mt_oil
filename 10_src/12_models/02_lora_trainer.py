@@ -1,6 +1,7 @@
 import torch
 import gc
 from typing import Dict
+from pathlib import Path
 
 from transformers import AutoModelForSeq2SeqLM
 from peft import LoraConfig, get_peft_model, TaskType
@@ -65,6 +66,12 @@ class LoRATrainer(BaseTrainer):
             torch.cuda.synchronize()
         
         result = super().train(train_data, val_data, config)
+        
+        if config.get('save_final_model', True):
+            final_path = Path(config['output_dir']) / 'final_model'
+            final_path.mkdir(parents=True, exist_ok=True)
+            result['trainer'].save_model(str(final_path))
+            result['final_model_path'] = str(final_path)
         
         gc.collect()
         if torch.cuda.is_available():

@@ -1,0 +1,33 @@
+2025-12-04 10:01:35,356 - data_scaling - INFO - ================================================================================
+2025-12-04 10:01:35,401 - data_scaling - INFO - EXPERIMENT 1: DATA SCALING ANALYSIS
+2025-12-04 10:01:35,402 - data_scaling - INFO - ================================================================================
+2025-12-04 10:01:35,402 - data_scaling - INFO - Using HF cache: /crex/proj/uppmax2025-3-5/private/yaxj1/hf_cache
+2025-12-04 10:01:40,574 - data_scaling - INFO - Loading data splits
+2025-12-04 10:01:40,942 - data_scaling - INFO - Train: 13622 samples
+2025-12-04 10:01:40,946 - data_scaling - INFO - Val: 1702 samples
+2025-12-04 10:01:40,952 - data_scaling - INFO - Test: 1704 samples
+2025-12-04 10:01:40,957 - data_scaling - INFO - Data sizes to test: [100, 500, 1000, 2000, 4000, 6000, 8000, 10000, 13622]
+2025-12-04 10:01:40,962 - data_scaling - INFO - 
+============================================================
+2025-12-04 10:01:40,967 - data_scaling - INFO - Experiment 1/9: Training with 100 samples
+2025-12-04 10:01:40,967 - data_scaling - INFO - ============================================================
+2025-12-04 10:01:45,860 - data_scaling - INFO - Starting training...
+[2025-12-04 10:02:08,813][accelerate.utils.modeling][INFO] - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+trainable params: 4,718,592 || all params: 1,144,502,272 || trainable%: 0.41228332310379195
+[2025-12-04 10:02:19,083][accelerate.utils.other][WARNING] - Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+{'train_runtime': 51.6171, 'train_samples_per_second': 5.812, 'train_steps_per_second': 0.349, 'train_loss': 2.6954589419894748, 'epoch': 2.88}
+2025-12-04 10:20:23,743 - data_scaling - INFO - Generating predictions...
+2025-12-04 10:33:04,976 - data_scaling - INFO - Results for size 100:
+2025-12-04 10:33:05,020 - data_scaling - INFO -   Val  - BLEU: 0.1173, chrF: 29.15
+2025-12-04 10:33:05,020 - data_scaling - INFO -   Test - BLEU: 0.1188, chrF: 29.56
+2025-12-04 10:33:05,020 - data_scaling - INFO -   *** NEW BEST MODEL ***
+2025-12-04 10:33:05,060 - data_scaling - INFO - 
+============================================================
+2025-12-04 10:33:05,060 - data_scaling - INFO - Experiment 2/9: Training with 500 samples
+2025-12-04 10:33:05,061 - data_scaling - INFO - ============================================================
+2025-12-04 10:33:09,171 - data_scaling - INFO - Starting training...
+[2025-12-04 10:33:16,031][accelerate.utils.modeling][INFO] - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+trainable params: 4,718,592 || all params: 1,144,502,272 || trainable%: 0.41228332310379195
+[2025-12-04 10:33:25,585][accelerate.utils.other][WARNING] - Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+{'loss': 2.2739, 'learning_rate': 0.00025, 'epoch': 1.6}
+{'train_runtime': 219.6673, 'train_samples_per_second': 6.829, 'train_steps_per_second': 0.423, 'train_loss': 1.6738382975260417, 'epoch': 2.98}

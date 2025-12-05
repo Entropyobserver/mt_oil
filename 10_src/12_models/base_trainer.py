@@ -1,0 +1,231 @@
+import os
+from abc import ABC, abstractmethod
+from typing import Dict, List
+from pathlib import Path
+
+import torch
+import numpy as np
+from transformers import (
+    AutoTokenizer,
+    AutoModelForSeq2SeqLM,
+    Seq2SeqTrainingArguments,
+    Seq2SeqTrainer,
+    DataCollatorForSeq2Seq,
+    EarlyStoppingCallback
+)
+from datasets import Dataset
+import evaluate
+import mlflow
+
+
+class BaseTrainer(ABC):
+    
+    def __init__(self, model_name: str, src_lang: str, tgt_lang: str, use_mlflow: bool = True):
+        self.model_name = model_name
+        self.src_lang = src_lang
+        self.tgt_lang = tgt_lang
+        self.use_mlflow = use_mlflow
+        
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.tokenizer.src_lang = src_lang
+        self.tokenizer.tgt_lang = tgt_lang
+        
+        self.bleu = evaluate.load("bleu")
+        self.chrf = evaluate.load("chrf")
+        
+        os.environ["TOKENIZERS_PARALLELISM"] = "false"
+    
+    @abstractmethod
+    def setup_model(self, **kwargs):
+        pass
+    
+    def tokenize_function(self, examples: Dict) -> Dict:
+        self.tokenizer.src_lang = self.src_lang
+        model_inputs = self.tokenizer(
+            examples["source"],
+            max_length=128,
+            truncation=True,
+            padding=False
+        )
+        
+        self.tokenizer.tgt_lang = self.tgt_lang
+        labels = self.tokenizer(
+            examples["target"],
+            max_length=128,
+            truncation=True,
+            padding=False
+        )
+        
+        model_inputs["labels"] = labels["input_ids"]
+        return model_inputs
+    
+    def compute_metrics(self, eval_pred) -> Dict:
+        predictions, labels = eval_pred
+        
+        if predictions.ndim == 3:
+            predictions = np.argmax(predictions, axis=-1)
+        
+        decoded_preds = self.tokenizer.batch_decode(predictions, skip_special_tokens=True)
+        labels = np.where(labels != -100, labels, self.tokenizer.pad_token_id)
+        decoded_labels = self.tokenizer.batch_decode(labels, skip_special_tokens=True)
+        
+        bleu_result = self.bleu.compute(predictions=decoded_preds, references=[[label] for label in decoded_labels])
+        chrf_result = self.chrf.compute(predictions=decoded_preds, references=decoded_labels)
+        
+        return {
+            "bleu": bleu_result["bleu"],
+            "chrf": chrf_result["score"]
+        }
+    
+    def prepare_datasets(self, train_data: List[Dict], val_data: List[Dict]):
+        train_dataset = Dataset.from_list(train_data)
+        val_dataset = Dataset.from_list(val_data)
+        
+        train_dataset = train_dataset.map(
+            self.tokenize_function,
+            batched=True,
+            remove_columns=train_dataset.column_names
+        )
+        
+        val_dataset = val_dataset.map(
+            self.tokenize_function,
+            batched=True,
+            remove_columns=val_dataset.column_names
+        )
+        
+        return train_dataset, val_dataset
+    
+    def create_training_args(self, config: Dict) -> Seq2SeqTrainingArguments:
+        eval_steps = config.get("eval_steps", 200)
+        save_steps = config.get("save_steps", 400)
+        
+        if save_steps % eval_steps != 0:
+            save_steps = eval_steps * 2
+        
+        return Seq2SeqTrainingArguments(
+            output_dir=config.get("output_dir", "output"),
+            num_train_epochs=config.get("epochs", 3),
+            per_device_train_batch_size=config.get("batch_size", 4),
+            per_device_eval_batch_size=config.get("batch_size", 4),
+            gradient_accumulation_steps=config.get("gradient_accumulation_steps", 4),
+            warmup_steps=config.get("warmup_steps", 100),
+            learning_rate=config.get("learning_rate", 5e-4),
+            weight_decay=config.get("weight_decay", 0.01),
+            logging_steps=config.get("logging_steps", 50),
+            evaluation_strategy="steps",
+            eval_steps=eval_steps,
+            save_strategy="steps",
+            save_steps=save_steps,
+            save_total_limit=config.get("save_total_limit", 2),
+            load_best_model_at_end=True,
+            metric_for_best_model=config.get("metric_for_best_model", "bleu"),
+            greater_is_better=True,
+            predict_with_generate=True,
+            generation_max_length=config.get("generation_max_length", 128),
+            fp16=config.get("fp16", True),
+            dataloader_pin_memory=False,
+            remove_unused_columns=False,
+            report_to=config.get("report_to", []),
+            dataloader_num_workers=config.get("dataloader_num_workers", 0),
+            max_grad_norm=config.get("max_grad_norm", 1.0)
+        )
+    
+    def train(self, train_data: List[Dict], val_data: List[Dict], config: Dict) -> Dict:
+        
+        if self.use_mlflow:
+            try:
+                mlflow.log_params({
+                    "model_name": self.model_name,
+                    "train_size": len(train_data),
+                    "val_size": len(val_data),
+                    "epochs": config.get("epochs", 3),
+                    "batch_size": config.get("batch_size", 4),
+                    "learning_rate": config.get("learning_rate", 5e-4),
+                })
+                
+                if "r" in config:
+                    mlflow.log_params({
+                        "lora_r": config["r"],
+                        "lora_alpha": config.get("alpha", 32),
+                        "lora_dropout": config.get("dropout", 0.1)
+                    })
+            except:
+                pass
+        
+        model = self.setup_model(**config)
+        train_dataset, val_dataset = self.prepare_datasets(train_data, val_data)
+        
+        data_collator = DataCollatorForSeq2Seq(
+            tokenizer=self.tokenizer,
+            model=model,
+            padding=True
+        )
+        
+        training_args = self.create_training_args(config)
+        
+        callbacks = []
+        if config.get("early_stopping_patience"):
+            callbacks.append(
+                EarlyStoppingCallback(
+                    early_stopping_patience=config["early_stopping_patience"],
+                    early_stopping_threshold=config.get("early_stopping_threshold", 0.001)
+                )
+            )
+        
+        trainer = Seq2SeqTrainer(
+            model=model,
+            args=training_args,
+            train_dataset=train_dataset,
+            eval_dataset=val_dataset,
+            tokenizer=self.tokenizer,
+            data_collator=data_collator,
+            compute_metrics=self.compute_metrics,
+            callbacks=callbacks
+        )
+        
+        trainer.train()
+        eval_result = trainer.evaluate()
+        
+        if self.use_mlflow:
+            try:
+                mlflow.log_metrics({
+                    "val_bleu": eval_result.get("eval_bleu", 0.0),
+                    "val_chrf": eval_result.get("eval_chrf", 0.0),
+                    "val_loss": eval_result.get("eval_loss", 0.0)
+                })
+            except:
+                pass
+        
+        return {
+            "model": model,
+            "trainer": trainer,
+            "bleu": eval_result.get("eval_bleu", 0.0),
+            "chrf": eval_result.get("eval_chrf", 0.0),
+            "loss": eval_result.get("eval_loss", 0.0)
+        }
+    
+    def generate_predictions(self, model, dataset, batch_size=8):
+        predictions = []
+        device = next(model.parameters()).device
+        
+        for i in range(0, len(dataset), batch_size):
+            batch_samples = dataset.samples[i:i+batch_size]
+            batch_sources = [s.source for s in batch_samples]
+            
+            self.tokenizer.src_lang = self.src_lang
+            inputs = self.tokenizer(
+                batch_sources,
+                return_tensors="pt",
+                max_length=128,
+                truncation=True,
+                padding=True
+            )
+            inputs = {k: v.to(device) for k, v in inputs.items()}
+            
+            with torch.no_grad():
+                generated = model.generate(**inputs, max_length=128, num_beams=5)
+            
+            batch_preds = self.tokenizer.batch_decode(generated, skip_special_tokens=True)
+            predictions.extend(batch_preds)
+        
+        return predictions

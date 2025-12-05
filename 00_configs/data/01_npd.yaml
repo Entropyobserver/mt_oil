@@ -1,0 +1,28 @@
+dataset: npd
+description: Norwegian Petroleum Directorate dataset
+
+paths:
+  raw: 00_raw_npd                           
+  processed: 01_processed_npd               
+  splits: 02_final_splits_npd               
+  train: 02_final_splits_npd/train.json     
+  val: 02_final_splits_npd/val.json         
+  test: 02_final_splits_npd/test.json       
+
+terminology:
+  glossary: terminology/glossary_npd.json
+  use_terminology: false
+
+statistics:
+  total_samples: null
+  train_samples: null
+  val_samples: null
+  test_samples: null
+  avg_source_length: null
+  avg_target_length: null
+
+preprocessing:
+  min_length: 3
+  max_length: 512
+  remove_duplicates: true
+  lowercase: false
