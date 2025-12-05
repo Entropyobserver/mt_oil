@@ -1,1 +1,17 @@
 * text=auto eol=lf
+# 模型文件
+*.bin
+*.pt
+*.ckpt
+
+# 大型 tokenizer / adapter / checkpoints
+**/checkpoint-*/
+**/final_model/
+
+# 日志
+*.out
+*.err
+*.log
+
+# PyTorch / HF 缓存
+.cache/
